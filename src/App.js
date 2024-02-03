@@ -27,11 +27,11 @@ export default function App(){
       document.body.style.color = "black";
     }
   }; 
-  {
+  
     //We set the default background color to whitesmoke
     if (mode==='light') 
     document.body.style.backgroundColor='whitesmoke';
-  }
+  
 
   const [search,setSearch]= useState("");       //Search Functions
 
