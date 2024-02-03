@@ -2,7 +2,9 @@ import React, { useEffect, useState} from 'react'
 import CryptoItem from './CryptoItem'
 import Spinner from './Spinner'
 import axios from 'axios';
-
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+axios.defaults.timeout=5000;
 const CryptoCurrency = (props) => {
 
   const options = {
@@ -24,32 +26,79 @@ const CryptoCurrency = (props) => {
     }
   };
 
+  const notify = (msg,found)=>{ 
+    if(found===1){
+      toast.success(msg, {
+        position: "bottom-right",
+        autoClose: 3000,  
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: props.mode,
+        }); 
+    }else if(found === 2){
+      toast.warn(msg, {
+        position: "bottom-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: props.mode,
+        }); 
+    }else if(found===3){
+      toast.error(msg, {
+        position: "bottom-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: props.mode,
+        }); 
+    }
+  }
+
   const [data,setData]= useState([]);
   const [loading,setLoading]= useState(true);
 
   useEffect(() =>{
-    document.title="cryptoX- Crypto Currency"
+    document.title="CryptX- Crypto Currency"
     axios.request(options)
     .then((response)=>{
       console.log(response.data.data);
       setData(response.data.data);
       setLoading(false);                                                 
     })
+    .catch(error => {
+      console.log(error)
+      notify(`${error.name+':'+error.message}`,3)
+    })
   }, [])
 
   return (
     <div className="container-sm">
-      <div style={{height:'72px'}}></div>   {/* This is to leave some area for the fixed navigation bar*/}
+      <div style={{height:'72px'}}></div>{/* This is to leave some area for the fixed navigation bar*/}
     
-      {
-        (props.type==='crypto') && <h2>Top Global Crypto Currencies</h2>    //If <CryptoCurrency> component is being used for displaying the top cryptocurrencies, then this will be displayed
+      {       //If <CryptoCurrency> component is being used for displaying the top cryptocurrencies, then this will be displayed
+        (props.type==='crypto') && <h2>Top Global Crypto Currencies</h2>    
       }
       {       // If <CryptoCurrency> component is being used as a search bar then this will be displayed
         (props.type==='search') && <div>
-          <h2>Here are the Search Results</h2>
-          {
-            (data?.stats?.total===0) && <div>No results found</div>   //This will be displayed if no results are found
+          <h2>{`Showing search results for: ${props.search}`}</h2>
+          {   //This will be displayed if no results are found
+            (data?.stats?.total===0) && <div>No results found </div> 
+          }      
+          <ToastContainer />
+          
+          {//Toast Settings
+          (data?.stats?.total===0)? notify(`No Results Found`,2):notify(`${data?.stats?.total} Results Found`,1)
           }
+    
           </div>
       }
 
@@ -63,7 +112,7 @@ const CryptoCurrency = (props) => {
       }
       </div> }
       {
-      loading && <Spinner mode={props.mode}/>
+      loading && <Spinner mode={props.mode}/> //Short-Circuiting to load Spinner
       }
     </div>
   )
