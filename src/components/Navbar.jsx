@@ -37,10 +37,10 @@ export default function Navbar(props) {
               <Link className="nav-link hoverByCSS" aria-current="page" to="/cryptocurrency">Crypto</Link>
             </li>
             <li className="nav-item mx-3 my-1">
-              <a className="nav-link  hoverByCSS" target="_blank" href="https://github.com/BlackThunder39">GitHub</a>
+              <a className="nav-link  hoverByCSS" target="_blank" href="https://github.com/arpitjha2511">GitHub</a>
             </li>
             <li className="nav-item mx-3 my-1">
-            <a className="nav-link hoverByCSS" target="_blank" href="https://www.linkedin.com/in/arpit-j-8024b5230/">Linkedin</a>
+            <a className="nav-link hoverByCSS" target="_blank" href="https://www.linkedin.com/in/arpitjha2511/">Linkedin</a>
             </li>
             <li className="nav-item mx-3 my-1">
             <a className="nav-link disabled" target="_blank" >Other Projects</a>
